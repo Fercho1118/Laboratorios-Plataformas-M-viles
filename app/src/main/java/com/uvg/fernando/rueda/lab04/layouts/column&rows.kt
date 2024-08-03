@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uvg.fernando.rueda.lab04.R
 import com.uvg.fernando.rueda.lab04.background.BorderColor
+import org.w3c.dom.Text
 
 @Composable
 fun MainContent(){
@@ -68,6 +69,8 @@ fun ContentCard() {
         ) {
             TitleSection()
             MemberSection()
+            ProfessorSection()
+            StudentSection()
         }
     }
 }
@@ -102,4 +105,27 @@ fun MemberSection() {
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+fun ProfessorSection(){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ){
+        Text(text = "CATEDRÁTICO", fontWeight = FontWeight.Bold)
+        Text(text = "Juan Carlos Durini")
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+fun StudentSection(){
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
+    ){
+        Text(text = "Fernando Rueda")
+        Text(text = "23748")
+    }
 }
