@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uvg.fernando.rueda.lab04.R
@@ -44,6 +45,7 @@ fun ContentCard() {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .padding(5.dp)
             .background(color = Color.White)
             .drawBehind {
                 drawRect(
@@ -63,7 +65,7 @@ fun ContentCard() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -80,14 +82,17 @@ fun TitleSection() {
     Text(
         text = "Universidad del Valle de Guatemala",
         fontSize = 35.sp,
+        textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(bottom = 16.dp)
+        lineHeight = 36.sp,
+        modifier = Modifier.padding(bottom = 20.dp)
     )
     Text(
         text = "Programación de plataformas móviles, Sección 30",
-        fontSize = 26.sp,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(bottom = 16.dp)
+        fontSize = 25.sp,
+        textAlign = TextAlign.Center,
+        lineHeight = 30.sp,
+        modifier = Modifier.padding(bottom = 20.dp)
     )
 }
 
@@ -99,12 +104,12 @@ fun MemberSection() {
     ){
         Text(text = "INTEGRANTES", fontWeight = FontWeight.Bold)
         Column {
-            Text(text = "Fernando Rueda")
-            Text(text = "Fernando Hernández")
-            Text(text = "Juan Francisco Martínez")
+            Text(text = "Fernando Rueda", modifier = Modifier.align(Alignment.CenterHorizontally))
+            Text(text = "Fernando Hernández", modifier = Modifier.align(Alignment.CenterHorizontally))
+            Text(text = "Juan Francisco Martínez", modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(20.dp))
 }
 
 @Composable
@@ -113,17 +118,26 @@ fun ProfessorSection(){
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ){
-        Text(text = "CATEDRÁTICO", fontWeight = FontWeight.Bold)
-        Text(text = "Juan Carlos Durini")
+        Text(text = "CATEDRÁTICO",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+        ){
+            Text(text = "Juan Carlos Durini", modifier = Modifier.align(Alignment.Center))
+        }
     }
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(20.dp))
 }
 
 @Composable
 fun StudentSection(){
     Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(text = "Fernando Rueda")
         Text(text = "23748")
