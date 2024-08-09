@@ -5,6 +5,7 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,9 +17,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,5 +85,33 @@ fun MyApp() {
                 Text(text = "Terminar jornada")
             }
         }
-    }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Card(
+            elevation = CardDefaults.cardElevation(4.dp),
+            modifier = Modifier.fillMaxWidth().padding(8.dp)
+        ){
+            Box(
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+            ){
+                Column(
+                    modifier = Modifier.align(Alignment.CenterStart)
+                ) {
+                    Text(text = "T.G.I Friday's", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(text = "C.C. Pradera Concepción, 1er Nivel, Local 151", fontSize = 10.sp)
+                    Text(text = "12:00PM - 11:55PM", fontSize = 10.sp)
+                }
+                IconButton(onClick = {
+                    val uri = Uri.parse("geo:0,0?q=T.G.I+Friday's+C.C.+Pradera+Concepción,+1er+Nivel,+Local+151")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    context.startActivity(mapIntent)
+                    },
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ){
+                    Icon(Icons.Default.Directions, contentDescription = "Dirección")
+                    }
+                }
+            }
+        }
 }
