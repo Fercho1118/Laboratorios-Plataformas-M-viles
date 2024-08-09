@@ -3,6 +3,7 @@ package com.uvg.rueda.lab05.layouts
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -49,7 +51,7 @@ fun MyApp() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Gray)
+                .background(Color.LightGray)
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -58,7 +60,7 @@ fun MyApp() {
                 androidx.compose.material3.Icon(imageVector = Icons.Default.Update, contentDescription = "Actualización disponible", tint = Color(0xFF26C6DA))
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Actualización disponible", fontSize = 16.sp )
+            Text(text = "Actualización disponible", fontSize = 14.sp )
             ClickableText(
                 text = AnnotatedString("Descargar"),
                 onClick = {
@@ -89,17 +91,21 @@ fun MyApp() {
 
         Card(
             elevation = CardDefaults.cardElevation(4.dp),
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         ){
             Box(
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ){
                 Column(
                     modifier = Modifier.align(Alignment.CenterStart)
                 ) {
                     Text(text = "T.G.I Friday's", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                    Text(text = "C.C. Pradera Concepción, 1er Nivel, Local 151", fontSize = 10.sp)
-                    Text(text = "12:00PM - 11:55PM", fontSize = 10.sp)
+                    Text(text = "C.C. Pradera Concepción", fontSize = 15.sp)
+                    Text(text = "12:00PM - 11:55PM", fontSize = 12.sp)
                 }
                 IconButton(onClick = {
                     val uri = Uri.parse("geo:0,0?q=T.G.I+Friday's+C.C.+Pradera+Concepción,+1er+Nivel,+Local+151")
@@ -110,8 +116,32 @@ fun MyApp() {
                     modifier = Modifier.align(Alignment.TopEnd)
                 ){
                     Icon(Icons.Default.Directions, contentDescription = "Dirección")
-                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ){
+                Button(onClick = {
+                    Toast.makeText(context, "Fernando Rueda", Toast.LENGTH_SHORT).show()
+                },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7043)), shape = CutCornerShape(0), modifier = Modifier.weight(1f)
+                ){
+                    Text(text = "Iniciar", color = Color.White)
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = {
+                    Toast.makeText(context, "Comida Americana\nQQ", Toast.LENGTH_LONG).show()
+                }, shape = CutCornerShape(0), modifier = Modifier.weight(1f)
+                ){
+                    Text(text = "Detalles")
                 }
             }
         }
+    }
 }
