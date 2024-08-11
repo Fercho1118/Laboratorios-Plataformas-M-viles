@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
@@ -28,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,26 +53,31 @@ fun MyApp() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
+                .background(Color(0xFFE3F2FD))
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ){
             Row(verticalAlignment = Alignment.CenterVertically) {
-                androidx.compose.material3.Icon(imageVector = Icons.Default.Update, contentDescription = "Actualización disponible", tint = Color(0xFF26C6DA))
+                androidx.compose.material3.Icon(imageVector = Icons.Default.Update, contentDescription = "Actualización disponible", tint = Color(0xFF3F51B5))
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Actualización disponible", fontSize = 14.sp )
-            ClickableText(
-                text = AnnotatedString("Descargar"),
-                onClick = {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp")
-                    )
-                    context.startActivity(intent)
-                }
-            )
+            Text(text = "Actualización disponible", fontSize = 16.sp, fontWeight =  FontWeight.Medium, color = Color(0xFF3F51B5) )
+            TextButton(onClick = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp")
+                )
+                context.startActivity(intent)
+            }) {
+                Text(
+                    text = "Descargar",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFF3F51B5),
+                    modifier = Modifier.wrapContentWidth()
+                )
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -137,7 +144,7 @@ fun MyApp() {
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = {
                     Toast.makeText(context, "Comida Americana\nQQ", Toast.LENGTH_LONG).show()
-                }, shape = CutCornerShape(0), modifier = Modifier.weight(1f)
+                }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5)),shape = CutCornerShape(0), modifier = Modifier.weight(1f)
                 ){
                     Text(text = "Detalles")
                 }
