@@ -164,6 +164,21 @@ fun AppContadora() {
                     }
                 }
             }
+            Button(
+                onClick = {
+                    contador = 0
+                    incrementroContador = 0
+                    decrementoContador = 0
+                    valorMaximo = 0
+                    valorMinimo = 0
+                    cambioContador = 0
+                    historial.clear()
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0071B8))
+            ){
+                Text(text = "Reiniciar", color = Color.White)
+            }
         }
     }
 }
