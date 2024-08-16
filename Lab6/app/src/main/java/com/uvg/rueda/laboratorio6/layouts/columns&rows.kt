@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -52,7 +55,7 @@ fun AppContadora() {
             .fillMaxSize()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        
     ){
         Text(
             text = "Fernando Rueda",
@@ -142,15 +145,15 @@ fun AppContadora() {
             }, fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.Black
             )
             Text(text = "Historial: ", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-            FlowRow(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(5),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                maxItemsInEachRow = 5
+                    .height(350.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ){
-                historial.forEach{ entry ->
+                items(historial){ entry ->
                     Box(
                         modifier = Modifier
                             .size(55.dp)
@@ -164,6 +167,7 @@ fun AppContadora() {
                     }
                 }
             }
+            Spacer(modifier = Modifier.weight(1F))
             Button(
                 onClick = {
                     contador = 0
