@@ -1,5 +1,15 @@
 package com.uvg.rueda.lab7.layouts
 
+import androidx.benchmark.perfetto.Row
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -58,3 +68,28 @@ fun generateFakeNotifications(): List<Notification> {
     }
     return notifications
 }
+
+@Composable
+fun NotificationFilter(
+    selectedFilter: NotificationType,
+    onFilterSelected: (NotificationType) -> Unit
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ){
+        NotificationType.values().forEach { filter ->
+            FilterChip(
+                selected = filter == selectedFilter,
+                onClick = { onFilterSelected(filter)},
+                label = {
+                    Text(text = filter.name.replace("_", ""))
+                },
+                modifier = Modifier.padding(4.dp)
+            )
+        }
+    }
+}
+
