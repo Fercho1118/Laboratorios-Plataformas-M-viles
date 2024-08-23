@@ -2,6 +2,7 @@ package com.uvg.rueda.lab7.layouts
 
 import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -93,21 +95,33 @@ fun NotificationFilter(
     selectedFilter: NotificationType,
     onFilterSelected: (NotificationType) -> Unit
 ){
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ){
-        NotificationType.values().forEach { filter ->
-            FilterChip(
-                selected = filter == selectedFilter,
-                onClick = { onFilterSelected(filter)},
-                label = {
-                    Text(text = filter.name.replace("_", ""))
-                },
-                modifier = Modifier.padding(4.dp)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Tipos de notificaciones",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            val filters = listOf(
+                "Informativas" to NotificationType.GENERAL,
+                "Capacitaciones" to NotificationType.NEW_POST 
             )
+
+            filters.forEach { (text, type) ->
+                FilterChip(
+                    selected = type == selectedFilter,
+                    onClick = { onFilterSelected(type) },
+                    label = { Text(text = text) },
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
         }
     }
 }
