@@ -4,10 +4,19 @@ import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -16,7 +25,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -110,8 +122,10 @@ fun NotificationFilter(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val filters = listOf(
-                "Informativas" to NotificationType.GENERAL,
-                "Capacitaciones" to NotificationType.NEW_POST 
+                "General" to NotificationType.GENERAL,
+                "Nueva publicación" to NotificationType.NEW_POST,
+                "Mensajes" to NotificationType.NEW_MESSAGE,
+                "Likes" to NotificationType.NEW_LIKE
             )
 
             filters.forEach { (text, type) ->
@@ -120,6 +134,58 @@ fun NotificationFilter(
                     onClick = { onFilterSelected(type) },
                     label = { Text(text = text) },
                     modifier = Modifier.padding(4.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun NotificationItem(notification: Notification) {
+    val backgroundColor = when (notification.type) {
+        NotificationType.GENERAL -> Color(0xFFFFF9C4)
+        NotificationType.NEW_POST -> Color(0xFFE3F2FD)
+        NotificationType.NEW_MESSAGE -> Color(0xFFE0F7FA)
+        NotificationType.NEW_LIKE -> Color(0xFFF3E5F5)
+    }
+    val icon = when (notification.type) {
+        NotificationType.GENERAL -> Icons.Default.Notifications
+        NotificationType.NEW_POST -> Icons.Default.Info
+        NotificationType.NEW_MESSAGE -> Icons.Default.Email
+        NotificationType.NEW_LIKE -> Icons.Default.ThumbUp
+    }
+
+    Card(
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(
+                    text = notification.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = notification.body,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = notification.sendAt.toString(),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.align(Alignment.End)
                 )
             }
         }
