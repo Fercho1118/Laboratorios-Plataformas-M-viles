@@ -1,7 +1,10 @@
 package com.uvg.rueda.lab7.layouts
 
 import androidx.benchmark.perfetto.Row
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
@@ -22,11 +27,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +44,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.uvg.rueda.lab7.ui.theme.PaleGreenColor
+import com.uvg.rueda.lab7.ui.theme.TopAppBarGreenColor
+import com.uvg.rueda.lab7.ui.theme.selectedColor
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -100,12 +110,13 @@ fun generateFakeNotifications(): List<Notification> {
 @Composable
 fun NotificationAppBar(onBackClick: () -> Unit){
     TopAppBar(
-        title = { Text(text = "Notificaciones")},
+        title = { Text(text = "Notificaciones", color = Color.White)},
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back" )
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = TopAppBarGreenColor)
     )
 }
 
@@ -121,25 +132,32 @@ fun NotificationFilter(
     ) {
         Text(
             text = "Tipos de notificaciones",
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium,
+            color = Color.Black,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        Row(
+        LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val filters = listOf(
+            items(listOf(
                 "General" to NotificationType.GENERAL,
                 "Nueva publicación" to NotificationType.NEW_POST,
                 "Mensajes" to NotificationType.NEW_MESSAGE,
                 "Likes" to NotificationType.NEW_LIKE
-            )
-
-            filters.forEach { (text, type) ->
+            )) { (text, type) ->
                 FilterChip(
                     selected = type == selectedFilter,
                     onClick = { onFilterSelected(type) },
-                    label = { Text(text = text) },
+                    label = { Text(text = text, color = Color.Black) },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = if (isSystemInDarkTheme()) {
+                            Color.White
+                        } else {
+                            selectedColor
+                        },
+                    ),
                     modifier = Modifier.padding(4.dp)
                 )
             }
@@ -149,11 +167,16 @@ fun NotificationFilter(
 
 @Composable
 fun NotificationItem(notification: Notification) {
-    val backgroundColor = when (notification.type) {
+    val backgroundColor = if (isSystemInDarkTheme()) {
+        Color(0xFF2D2D2D)
+    } else {
+        PaleGreenColor
+    }
+    val iconBackgroundColor = when (notification.type) {
         NotificationType.GENERAL -> Color(0xFFFFF9C4)
-        NotificationType.NEW_POST -> Color(0xFFE3F2FD)
-        NotificationType.NEW_MESSAGE -> Color(0xFFE0F7FA)
-        NotificationType.NEW_LIKE -> Color(0xFFF3E5F5)
+        NotificationType.NEW_POST -> Color(0xFFBBDEFB)
+        NotificationType.NEW_MESSAGE -> Color(0xFFB2EBF2)
+        NotificationType.NEW_LIKE -> Color(0xFFE1BEE7)
     }
     val icon = when (notification.type) {
         NotificationType.GENERAL -> Icons.Default.Notifications
@@ -166,19 +189,39 @@ fun NotificationItem(notification: Notification) {
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp, vertical = 0.dp)
     ) {
+        Box(modifier = Modifier.padding(16.dp)){
+            Text(
+                text = notification.sendAt.toString(),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(bottom = 8.dp)
+            )
         Row(
             modifier = Modifier
                 .padding(16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = Color.Black,
-                modifier = Modifier.size(40.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(end = 16.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(color = iconBackgroundColor, shape = CircleShape)
+                        .padding(8.dp)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
             Column {
                 Text(
                     text = notification.title,
@@ -189,13 +232,8 @@ fun NotificationItem(notification: Notification) {
                     text = notification.body,
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Text(
-                    text = notification.sendAt.toString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.align(Alignment.End)
-                )
             }
-        }
+        }}
     }
 }
 
@@ -215,7 +253,11 @@ fun NotificationList(
 
 @Composable
 fun NotificationScreen(onBackClick: () -> Unit) {
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(PaleGreenColor)
+    ) {
         NotificationAppBar(onBackClick = onBackClick)
         var selectedFilter by remember { mutableStateOf(NotificationType.GENERAL) }
         val notifications = generateFakeNotifications()
